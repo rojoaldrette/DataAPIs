@@ -21,8 +21,10 @@ Las instituciones a las que estas funciones tienen acceso son las siguientes (se
 Este repositorio está hecho a partir de un proyecto en Rstudio usando devtools y roxygenise. 
 para instalarlo simplemente debes correr lo siguiente en tu Rstudio:
 
-`
+`````
 library(devtools)
+
 devtools::install_github("rojoaldrette/DataAPIs")
+
 library(dataAPIs)
-`
+`````
