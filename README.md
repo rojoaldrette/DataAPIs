@@ -5,5 +5,14 @@ Este repositorio contiene la creación de funciones que permiten obtener bases d
 Consiste en un solo archivo llamado dataApi.R el cual deberá usarse desde source() dentro de Rstudio para obtener dichas funciones.
 Existen dos distintos tipos de funciones:
 - do_one.institucion(id, from, to, temp) y,
-- do_all.institucion(file, from, to, temp, in_list)
+- do_all.api(file, from, to, temp, in_list)
+
 La primera consiste en una función que obtiene una serie única a partir de su id en la institución objetivo; mientras que la segunda obtendrá todas las series que se indiquen en un DataFrame con el formato indicado. La primera regresará un DataFrame con dos columnas: "fecha" y "valor", en formato de fecha aceptado por R y en formato de número, respectivamente. La segunda va a regresará dos posibles resultados: 1) un DF com la columna "fecha" y múltiples columnas con el nombre asignado dentro de "file"; o 2) una lista de DFs como los de la primera función para su manipulación individual.
+
+# Instituciones
+Las instituciones a las que estas funciones tienen acceso son las siguientes (se incluye su id):
+- Banco de México: BANXICO
+- INEGI Banco de Indicadores Económicos: BIE
+- INEGI BISE: BISE
+- Federal Reserve Economic Data: FRED
+- Yahoo Finance: YAHOO
