@@ -1,0 +1,10 @@
+Package: dataAPIs
+Title: APIs para manejo de datos
+Version: 0.0.0.1
+Authors@R: 
+    person("Rodrigo", "Aldrette", , "raaldrettes@colmex.mx", role = c("aut", "cre"))
+Description: Funciones que permiten obtener bases de datos de las API's de distintas instituciones a gran velocidad.
+License: 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
