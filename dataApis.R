@@ -35,6 +35,7 @@ showtext_auto()
 # - Agregar más API's: FMI, Banco Mundial, OCDE, BID, etc...
 # - Crear API's para python
 # - Agregar docstrings a las funciones para explicar su uso
+# - Incorporar transformaciones directo en api_all
 
 
 
@@ -314,6 +315,30 @@ api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
 }
 
 
+
+do_transformations <- function(df_lista, df_serie){
+  
+  for (i in 1:length(df_lista)) {
+    
+    df_lista[[i]]$valor <- as.numeric(gsub(",", "", df_lista[[i]]$valor))
+    
+    if (df_serie[i, 3] == 1) {
+      next
+    } else if (df_serie[i, 3] == 2){
+      df_lista[[i]]$valor <- c(0, diff(df_lista[[i]]$valor))
+    } else if (df_serie[i, 3] == 3){
+      df_lista[[i]]$valor <- c(0, diff(log(df_lista[[i]]$valor)))
+    } else if (df_serie[i, 3] == 4){
+      df_lista[[i]]$valor <- c(0, diff(diff(log(df_lista[[i]]$valor))))
+    } else{
+      next
+    }
+    
+  }
+  
+  return(df_lista)
+  
+}
 
 
 
