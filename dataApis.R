@@ -241,9 +241,9 @@ api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
 
 
 
-# Cargar todas de un archivo
+# Cargar todas de un archivo/DF
 
-do_all_api <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
+api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
   
   lista_temp <- list()
   
