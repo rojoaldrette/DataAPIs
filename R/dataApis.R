@@ -13,12 +13,10 @@
 # ______________________________________________________________________________
 
 
-
-
-  # Paquetes
+# Paquetes
+options(pacman.suppress_startup_messages = TRUE)
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr, jsonlite, httr)
-
 
 
 # Script _________________________________________________________________________________________________
@@ -44,6 +42,9 @@ pacman::p_load(dplyr, jsonlite, httr)
 #' API Banxico
 #'
 #' Obtén serie de la API de banxico
+#'
+#' *Recuerda primero introducir tu token de Banxico con set_api_tokens()
+#'
 #' @param id El id de la serie de Banxico
 #' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
 #' @param to Fecha final que nos interesa escrita en string
@@ -54,7 +55,15 @@ pacman::p_load(dplyr, jsonlite, httr)
 #' @export
 api_one.banxico <- function(id, from = "2000-01-01", to = "2025-06-01"){
 
-  token_banxico <- "cdd1fb5cef5f5c4302cd2fac0b9bb1518866008fc6c8d09d297548d56d00e2dd"
+  token_banxico <- if (!is.null(.pkg_env$config$banxico_token)) {
+                   .pkg_env$config$banxico_token
+                 } else {
+                   Sys.getenv("BANXICO_API_TOKEN", unset = "")
+                 }
+
+  if (is.null(token_banxico) || token_banxico == "") {
+    stop("Banxico API token not configured. Please set it using set_api_tokens() or BANXICO_API_TOKEN environment variable.")
+  }
 
   url <- paste0("https://www.banxico.org.mx/SieAPIRest/service/v1/series/", id
                 , "/datos/", from, "/", to,"?token=", token_banxico)
@@ -77,7 +86,6 @@ api_one.banxico <- function(id, from = "2000-01-01", to = "2025-06-01"){
 
   return(df_temp2)
 
-
 }
 
 
@@ -89,16 +97,40 @@ api_one.banxico <- function(id, from = "2000-01-01", to = "2025-06-01"){
 # BIE
 
 
+
+#' API INEGI BIE
+#'
+#' Obtén series de la API de INEGI del Banco de Indicadores Económicos
+#'
+#' *Recuerda primero introducir tu token de INEGI con set_api_tokens()
+#'
+#' @param id El id de la serie del BIE
+#' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
+#' @param to Fecha final que nos interesa escrita en string
+#' @param temporalidad Acepta "m" (month) o "q" (quarter) dependiendo de la serie,
+#' por defecto está en "m", ya que es la más común en el BIE.
+#' @return Un DataFrame con dos columnas: "fecha" y "valor"
+#' @examples
+#' consumo <- api_one.inegi_bie("740933", from="2000-01-01", to="2020-01-01",
+#'                               temporalidad="m");
+#' @export
 api_one.inegi_bie <- function(id, temporalidad="m", from = "2000-01-01", to = "2024-11-01"){
 
-  token_inegi <- "88cf3fd3-4f88-4448-98dd-d4c505b9c6f4"
+  token_inegi <- if (!is.null(.pkg_env$config$inegi_token)) {
+    .pkg_env$config$inegi_token
+  } else {
+    Sys.getenv("INEGI_API_TOKEN", unset = "")
+  }
 
+  if (is.null(token_inegi) || token_inegi == "") {
+    stop("INEGI API token not configured. Please set it using set_api_tokens() or INEGI_API_TOKEN environment variable.")
+  }
 
-  serie_pib <- id
+  serie <- id
 
 
   url <- paste0("https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/",
-                serie_pib, "/es/0700/false/BIE/2.0/", token_inegi, "?type=json")
+                serie, "/es/0700/false/BIE/2.0/", token_inegi, "?type=json")
 
   # 🔹 Hacer la petición a la API
   response <- GET(url)
@@ -151,11 +183,33 @@ api_one.inegi_bie <- function(id, temporalidad="m", from = "2000-01-01", to = "2
 # BISE
 
 
+#' API INEGI BISE
+#'
+#' Obtén series de la API de INEGI del Banco de Indicadores Socio-Económicos
+#'
+#' *Recuerda primero introducir tu token de INEGI con set_api_tokens()
+#'
+#' @param id El id de la serie del BIE
+#' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
+#' @param to Fecha final que nos interesa escrita en string
+#' @param temporalidad Acepta "m" (month) o "q" (quarter) dependiendo de la serie,
+#' por defecto está en "m", ya que es la más común en el BIE.
+#' @return Un DataFrame con dos columnas: "fecha" y "valor"
+#' @examples
+#' consumo <- api_one.inegi_bise("740933", from="2000-01-01", to="2020-01-01",
+#'                               temporalidad="m");
+#' @export
+api_one.inegi_bise <- function(id, temporalidad="m", from = "2000-01-01", to = "2024-11-01"){
 
-api_one.inegi_bise <- function(id){
+  token_inegi <- if (!is.null(.pkg_env$config$inegi_token)) {
+    .pkg_env$config$inegi_token
+  } else {
+    Sys.getenv("INEGI_API_TOKEN", unset = "")
+  }
 
-  token_inegi <- "88cf3fd3-4f88-4448-98dd-d4c505b9c6f4"
-
+  if (is.null(token_inegi) || token_inegi == "") {
+    stop("INEGI API token not configured. Please set it using set_api_tokens() or INEGI_API_TOKEN environment variable.")
+  }
 
   serie_pib <- id
 
@@ -163,10 +217,10 @@ api_one.inegi_bise <- function(id){
   url <- paste0("https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/",
                 serie_pib, "/es/0700/false/BISE/2.0/", token_inegi, "?type=json")
 
-  # 🔹 Hacer la petición a la API
+  # Hacer la petición a la API
   response <- GET(url)
 
-  # 🔹 Convertir la respuesta a texto y luego a JSON
+  # Convertir la respuesta a texto y luego a JSON
   data <- content(response, "text")
   flujoDatos<-paste(data ,collapse = " ")
 
@@ -184,7 +238,27 @@ api_one.inegi_bise <- function(id){
 
   df_temp <- df_temp[nrow(df_temp):1, ]
 
+
+  if (temporalidad == "q"){
+
+    date_temp <- as.yearqtr(df_temp$fecha, format = "%Y/%q")
+
+    df_temp$fecha <- as.Date(date_temp, frac = 0)
+
+    df_temp$fecha_quarter <- paste0(format(df_temp$fecha, "%Y"), "-", quarters(df_temp$fecha))
+
+  } else if (temporalidad == "m"){
+
+    df_temp$fecha <- as.Date(paste0(df_temp$fecha, "/01"), format = "%Y/%m/%d")
+
+  }
+
   df_temp <- df_temp %>% arrange(fecha)
+
+  df_temp <- df_temp %>%
+    filter(fecha >= as.Date(from)) %>%
+    filter(fecha <= as.Date(to))
+
 
   return(df_temp)
 
@@ -195,10 +269,24 @@ api_one.inegi_bise <- function(id){
 
 # Yahoo finanzas
 
-
+#' API INEGI BIE
+#'
+#' Obtén series de la API de Yahoo Finanzas
+#'
+#' * No necesita token, lo hace a través del paquete quantmod
+#' * Si necesitas mayor precisión (apertura, cierre, etc..) recomiendo usar directamente
+#' quantmod, ofrece mayor personalización y accesibilidad a datos financieros
+#'
+#' @param id El id de la serie de yahoo
+#' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
+#' @param to Fecha final que nos interesa escrita en string
+#' @return Un DataFrame con dos columnas: "fecha" y "valor"
+#' @examples
+#' consumo <- api_one.yahoo("MXN=X", from="2005-01-01", to="2008-01-01")
+#' @export
 api_one.yahoo <- function(id, from = "2000-01-01", to = "2024-11-30", adjusted = T){
 
-  df <- getSymbols(id, src = "yahoo", from = from, to = to, auto.assign = FALSE)
+  df <- quantmod::getSymbols(id, src = "yahoo", from = from, to = to, auto.assign = FALSE)
 
   if (adjusted){
     df <- Ad(df)
@@ -214,15 +302,36 @@ api_one.yahoo <- function(id, from = "2000-01-01", to = "2024-11-30", adjusted =
 # FRED
 
 
+#' API FRED
+#'
+#' Obtén series de la API de la Federal Reserve Economic Data
+#'
+#' *Recuerda primero introducir tu token de la FRED con set_api_tokens()
+#'
+#' @param id El id de la serie de Banxico
+#' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
+#' @param to Fecha final que nos interesa escrita en string
+#' @return Un DataFrame con dos columnas: "fecha" y "valor"
+#' @examples
+#' us_inpc <- api_one.fred("CPIAUCNS", from="2000-01-01", to="2020-01-01")
+#' @export
 api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
 
-  token.fred <- "cd961dd4a15107e7dc6bdf663faf1f0f"
+  token_fred <- if (!is.null(.pkg_env$config$fred_token)) {
+    .pkg_env$config$fred_token
+  } else {
+    Sys.getenv("FRED_API_TOKEN", unset = "")
+  }
+
+  if (is.null(token_fred) || token_fred == "") {
+    stop("FRED API token not configured. Please set it using set_api_tokens() or FRED_API_TOKEN environment variable.")
+  }
 
   url <- paste0("https://api.stlouisfed.org/fred/series/observations?",
                 "series_id=", id,
                 "&observation_start=", from,
                 "&observation_end=", to,
-                "&api_key=", token.fred,
+                "&api_key=", fred_token,
                 "&file_type=json")
 
   response <- GET(url)
@@ -233,7 +342,7 @@ api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
 
     # Convertir en DataFrame
     df <- as.data.frame(data_parsed$observations) %>%
-      mutate(value = as.numeric(value))  # Convertir valores a numérico
+      mutate(value = as.numeric(value))
 
     df2 <- data.frame(fecha = df$date,
                       valor = df$value)
@@ -249,9 +358,56 @@ api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
 
 
 
-# Cargar todas de un archivo/DF
 
-api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
+
+
+
+do_df_fromlista <- function(lista_df){
+
+  coso <- lista_df
+
+  coso <- lapply(names(coso), function(name) {
+    coso[[name]] %>%
+      rename(!!name := valor)
+  })
+
+  combined <- coso %>%
+    purrr::reduce(full_join, by = "fecha")
+
+
+  return(combined)
+}
+
+
+
+
+
+#' API Banxico
+#'
+#' Obtén múltiples series al mismo tiempo desde un df.
+#'
+#' * Recuerda primero introducir los tokens necesarios con set_api_tokens()
+#' * Necesitas tener un dataframe con las siguientes columnas en el siguiente orden:
+#'    * "id" (id de la serie)
+#'    * "description" (nombre a usar para la serie),
+#'    * "origen" (institución de la que viene) el origen tiene que estar escrito en mayusculas, ejemplo "BANXICO" o "BIE"
+#'    * "temp" (este es para la API de INEGI que necesita estipular mes o trimestre) y
+#'    * opcionalmente la columna "do" que aplica transformaciones con do_transform().
+#'
+#' Descripción más detallada para cargar varias series disponibles en el github del paquete: https://github.com/rojoaldrette/DataAPIs
+#'
+#' @param df_serie Un dataframe con las series a cargar
+#' @param from Fecha inicial que nos interesa escrita en string, ej. "2022-01-01"
+#' @param to Fecha final que nos interesa escrita en string
+#' @param same.length Está puesto en False por defecto; sin embargo, si tus series son de la misma temporalidad
+#' y longitud, puedes ponerlo en True para obtener un dataframe combinado con columnas nombradas según "description".
+#' @return Si same.length=F regresará una lista con los dataframes de cada serie,
+#' si es T, entonces regresará el dataframe combinado de todas las series (necesita misma longitud).
+#' @examples
+#' series <- read.csv("modelo_1.csv")
+#' var_x <- api_one.banxico(series, from="2000-01-01", to="2020-01-01")
+#' @export
+api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30", same.length=F){
 
   lista_temp <- list()
 
@@ -265,42 +421,30 @@ api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
 
     name <- df_serie[i, 2]
 
-    type <- df_serie[i, 4]
+    type <- df_serie[i, 3]
 
-    temp <- df_serie[i, 5]
+    temp <- df_serie[i, 4]
 
 
     if (type == "BANXICO"){
 
-      df_temp <- do_one_api.banxico(seriecoso, to = to) %>%
-        filter(fecha >= date.2)
+      df_temp <- api_one.banxico(seriecoso, from=from, to = to)
 
     } else if (type == "BIE"){
 
-      df_temp <- do_one_api.inegi_bie(seriecoso, temporalidad = temp) %>%
-        filter(fecha >= date.2)
+      df_temp <- api_one.inegi_bie(seriecoso, temporalidad = temp, from=from, to=to)
 
     } else if (type == "BISE"){
 
-      df_temp <- do_one_api.inegi_bise(seriecoso, temporalidad = temp) %>%
-        filter(fecha >= date.2)
+      df_temp <- api_one.inegi_bise(seriecoso, temporalidad = temp, from=from, to=to)
 
     } else if (type == "FRED"){
 
+      df_temp <- api_one.fred(seriecoso, from=from, to = to)
 
-      df_temp <- do_one_api.fred(seriecoso, to = to)
+    } else if (type == "YAHOO"){
 
-      df_temp$fecha <- as.Date(df_temp$fecha)
-
-      df_temp <- df_temp %>%
-        filter(fecha >= date.2)
-
-    } else if (type == "yahoo"){
-
-      df_temp <- do_one_api.yahoo(seriecoso, to = to)
-
-      df_temp <- df_temp %>%
-        filter(fecha >= date.2)
+      df_temp <- api_one.yahoo(seriecoso, from=from, to = to)
 
 
     } else if (type == "omit"){
@@ -317,9 +461,17 @@ api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30"){
 
   }
 
-  return(lista_temp)
+  result <- lista_temp
+
+  if (same.length){
+    result <- do_df_fromlista(result)
+  }
+
+  return(result)
 
 }
+
+
 
 
 
