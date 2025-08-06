@@ -21,10 +21,10 @@ Las instituciones a las que estas funciones tienen acceso son las siguientes (se
 Como cualquier paquete, las funciones tienen su propia descripción; sin
 embargo, esta función tiene un uso no tan intuitivo.
 Para usarla hay que crear un DataFrame que contenga las siguientes columnas:
-- *id*
-- *Nombre* (de la serie)
-- *Origen* (usando los id's de la sección Instituciones)
-- *do* Esta es opcional y es para una implementación futura para aplicar transformaciones
+- ***id***
+- ***Nombre*** (de la serie)
+- ***Origen*** (usando los id's de la sección Instituciones)
+- ***do*** Esta es opcional y es para una implementación futura para aplicar transformaciones
 rápidas a las series
 
 Esto se hace para que cada observación sea una serie por
@@ -32,6 +32,16 @@ cargar de estas instituciones. Al cargar esta tabla en DataFrame
 podremos usarlo en all_api() para obtener esas series automáticamente.
 Esto debería hacer muy rápido el trabajo que usualmente toma
 varias horas en recabar.
+
+Si quieres ver un ejemplo de tabla, en este repositorio
+hay un archivo excel llamado **ejemplo_all.xlsx** con el que 
+cargué varias series para un proyecto.
+
+Si primero obtienes la lista (same.length=F) y después si quieres 
+obtener el dataframe después de aplicar transformaciones a unas series, 
+hay una función en el paquete llamada "do_df_fromlista()", con el cual
+puedes forzar la lista de dataframes a un solo dataframe, esto asumiendo que son 
+de la misma longitud
 
 # ¿Cómo instalar?
 Este repositorio está hecho a partir de un proyecto en Rstudio usando devtools y roxygenise. 
