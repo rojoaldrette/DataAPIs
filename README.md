@@ -17,6 +17,29 @@ Las instituciones a las que estas funciones tienen acceso son las siguientes (se
 - Federal Reserve Economic Data: FRED
 - Yahoo Finance: YAHOO
 
+## Cargar tokens
+Para acceder a las API's necesitas tener un token personal
+de acceso a esa institución. Estos son muy sencillos de obtener, 
+puedes buscarlo fácilmente en la institución de tu interés.
+Solamente la API de Yahoo Finanzas no necesita token, es de libre acceso.
+
+Una vez tengas el token de la institución que te interesa
+deberás introducirla en tu sesión de R para tener acceso.
+Puedes hacerlo de la siguiente forma:
+
+`````
+
+set_api_tokens(
+  banxico_token = "abcd123",
+  inegi_token = "xyz456",
+  fred_token = "mhx284"
+)
+
+`````
+
+Una vez corras esta línea de código con tu token, podrás 
+hacer uso de las funciones de las cuales introdujiste un token.
+
 ## ¿Cómo usar api_all()?
 Como cualquier paquete, las funciones tienen su propia descripción; sin
 embargo, esta función tiene un uso no tan intuitivo.
