@@ -16,17 +16,21 @@
 # Paquetes
 options(pacman.suppress_startup_messages = TRUE)
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr, jsonlite, httr)
+pacman::p_load(
+  dplyr,     # Data manipulation
+  jsonlite,  # JSON parsing
+  httr,      # API requests
+  quantmod,  # Financial data (Yahoo/FRED)
+  purrr,     # reduce() for combining data
+  zoo        # as.yearqtr() for quarterly dates
+)
 
 
 # Script _________________________________________________________________________________________________
 
 # Cosas por atender:
-# - Universalizar las funciones y hacerlas un poco más eficientes
 # - Introducir alguna capacidad para cargar por chunks
 # - Arreglar el api_all para que acepte directamente el csv
-# - Ajustar el api_all para crear directo el DF o mantener la lista (debe
-# considerar los valores faltantes
 # - Agregar más API's: FMI, Banco Mundial, OCDE, BID, etc...
 # - Crear API's para python
 # - Agregar docstrings a las funciones para explicar su uso
@@ -87,7 +91,6 @@ api_one.banxico <- function(id, from = "2000-01-01", to = "2025-06-01"){
   return(df_temp2)
 
 }
-
 
 
 
