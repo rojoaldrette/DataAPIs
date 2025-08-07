@@ -13,18 +13,6 @@
 # ______________________________________________________________________________
 
 
-# Paquetes
-options(pacman.suppress_startup_messages = TRUE)
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(
-  dplyr,     # Data manipulation
-  jsonlite,  # JSON parsing
-  httr,      # API requests
-  quantmod,  # Financial data (Yahoo/FRED)
-  purrr,     # reduce() for combining data
-  zoo        # as.yearqtr() for quarterly dates
-)
-
 
 # Script _________________________________________________________________________________________________
 
