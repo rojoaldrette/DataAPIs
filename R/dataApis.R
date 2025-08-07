@@ -13,6 +13,15 @@
 # ______________________________________________________________________________
 
 
+# Paquetes
+
+#' @import dplyr
+#' @import jsonlite
+#' @import httr
+#' @import quantmod
+#' @import purrr
+#' @import zoo
+
 
 # Script _________________________________________________________________________________________________
 
@@ -23,6 +32,8 @@
 # - Crear API's para python
 # - Agregar docstrings a las funciones para explicar su uso
 # - Incorporar transformaciones directo en api_all
+
+
 
 
 
