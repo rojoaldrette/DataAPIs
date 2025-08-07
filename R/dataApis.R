@@ -72,7 +72,7 @@ api_one.banxico <- function(id, from = "2000-01-01", to = "2025-06-01"){
   url <- paste0("https://www.banxico.org.mx/SieAPIRest/service/v1/series/", id
                 , "/datos/", from, "/", to,"?token=", token_banxico)
 
-  response <- GET(url)
+  response <- httr::GET(url)
 
   data_temp <- content(response, as = "text", encoding = "UTF-8") %>% fromJSON()
 
@@ -136,7 +136,7 @@ api_one.inegi_bie <- function(id, temporalidad="m", from = "2000-01-01", to = "2
                 serie, "/es/0700/false/BIE/2.0/", token_inegi, "?type=json")
 
   # 🔹 Hacer la petición a la API
-  response <- GET(url)
+  response <- httr::GET(url)
 
   # 🔹 Convertir la respuesta a texto y luego a JSON
   data <- content(response, "text")
@@ -221,7 +221,7 @@ api_one.inegi_bise <- function(id, temporalidad="m", from = "2000-01-01", to = "
                 serie_pib, "/es/0700/false/BISE/2.0/", token_inegi, "?type=json")
 
   # Hacer la petición a la API
-  response <- GET(url)
+  response <- httr::GET(url)
 
   # Convertir la respuesta a texto y luego a JSON
   data <- content(response, "text")
@@ -337,7 +337,7 @@ api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
                 "&api_key=", fred_token,
                 "&file_type=json")
 
-  response <- GET(url)
+  response <- httr::GET(url)
 
   if (http_status(response)$category == "Success") {
     data_json <- content(response, as = "text", encoding = "UTF-8")
@@ -385,7 +385,7 @@ do_df_fromlista <- function(lista_df){
 
 
 
-#' API Banxico
+#' API all
 #'
 #' Obtén múltiples series al mismo tiempo desde un df.
 #'
