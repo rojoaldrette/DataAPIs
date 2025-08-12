@@ -15,13 +15,14 @@
 
 # Paquetes
 
-#' @import dplyr
-#' @import jsonlite
-#' @import httr
-#' @import quantmod
-#' @import purrr
-#' @import zoo
-
+#' @importFrom dplyr %>% filter mutate rename arrange
+#' @importFrom httr GET content
+#' @importFrom jsonlite fromJSON
+#' @importFrom quantmod getSymbols Ad
+#' @importFrom purrr reduce
+#' @importFrom zoo as.yearqtr
+#' @importFrom rlang sym
+NULL
 
 # Script _________________________________________________________________________________________________
 

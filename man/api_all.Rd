@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataApis.R
 \name{api_all}
 \alias{api_all}
-\title{API Banxico}
+\title{API all}
 \usage{
 api_all(df_serie, from = "2000-01-01", to = "2024-11-30", same.length = F)
 }

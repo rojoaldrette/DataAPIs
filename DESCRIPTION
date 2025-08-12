@@ -6,6 +6,16 @@ Authors@R:
 Description: Funciones que permiten obtener bases de datos de las API's de distintas instituciones a gran velocidad.
 License: 
 Encoding: UTF-8
+Imports:
+    dplyr (>= 1.0.0),
+    httr (>= 1.4.0),
+    jsonlite (>= 1.7.1),
+    quantmod (>= 0.4.18),
+    purrr (>= 0.3.4),
+    zoo (>= 1.8-9),
+    rlang (>= 0.4.10)
+Suggests:
+    testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 
