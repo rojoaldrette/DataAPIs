@@ -334,7 +334,7 @@ api_one.fred <- function(id, from = "2000-01-01", to = "2024-11-30"){
                 "series_id=", id,
                 "&observation_start=", from,
                 "&observation_end=", to,
-                "&api_key=", fred_token,
+                "&api_key=", token_fred,
                 "&file_type=json")
 
   response <- httr::GET(url)
