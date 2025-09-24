@@ -20,7 +20,7 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom quantmod getSymbols Ad
 #' @importFrom purrr reduce
-#' @importFrom zoo as.yearqtr index
+#' @importFrom zoo as.yearqtr index coredata
 #' @importFrom rlang sym
 NULL
 
