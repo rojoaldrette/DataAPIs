@@ -295,7 +295,7 @@ api_one.yahoo <- function(id, from = "2000-01-01", to = "2024-11-30", adjusted =
     df <- Ad(df)
   }
 
-  df_temp <- data.frame(fecha = index(df), valor = as.numeric(coredata(df)))
+  df_temp <- data.frame(fecha = as.Date(index(df)), valor = as.numeric(coredata(df)))
 
   return(df_temp)
 }
