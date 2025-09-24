@@ -15,7 +15,7 @@
 
 # Paquetes
 
-#' @importFrom dplyr %>% filter mutate rename arrange
+#' @importFrom dplyr %>% filter mutate rename arrange full_join
 #' @importFrom httr GET content http_status
 #' @importFrom jsonlite fromJSON
 #' @importFrom quantmod getSymbols Ad
