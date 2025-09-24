@@ -420,14 +420,10 @@ api_all <- function(df_serie, from = "2000-01-01", to = "2024-11-30", same.lengt
 
   for (i in 1:nrow(df_serie)){
 
-    seriecoso <- df_serie[i, 1]
-
-    name <- df_serie[i, 2]
-
-    type <- df_serie[i, 3]
-
-    temp <- df_serie[i, 4]
-
+    seriecoso <- as.character(df_serie[i, 1])
+    name      <- as.character(df_serie[i, 2])
+    type      <- as.character(df_serie[i, 3])
+    temp      <- as.character(df_serie[i, 4])
 
     if (type == "BANXICO"){
 
